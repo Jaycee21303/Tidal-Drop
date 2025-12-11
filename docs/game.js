@@ -59,27 +59,37 @@ let lastTime = 0;
 const surferImg = new Image();
 let surferImgReady = false;
 
-// Optional: drop a surfer sprite as assets/surfer.png.
-// If the file isn't present, we fall back to an embedded default sprite.
+// Embedded surfer sprite so the game stays playable without binary assets.
 const embeddedSurferDataUri =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABQElEQVR42u3XuxHCMBBFUcqhCAJKoQwXQRHExMTEVEA7C86Exuj/sbT3zWyEx/AOGls6HAghhJBuOZ4WsUd1eTUIrvIqEAAAAADdAPK+O8uvn08P4BsAZo/q8gD8geB0pPFf5y0AAAAAADALQEixkgMAAADwEARgSIDzRXwDAAAANMoit9YTBNDit/TC2C9AI4wxACpijAdQGGNsgAIYwwOIyDNrAgCi73n9/ixj5gSwSv6Mdd34AL6SntWwX4C1iHny2yponw4TvqMvQOhSNcu67heLUB3AVTBmqdaabICHvHzTvWQ1gIDyu0dQC1BkHxABUOy1mLnpiSrtBIgpbyC0LmpfV3Yr3GMFZL5Nks8m2c+AddnFAFR6bSYf1EqsgM0CjfcHyafWnH2Ac2PU+KGYfIR3JrC8jqgsTQghk+cDxYd49AvXy3EAAAAASUVORK5CYII=";
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABQElEQVR42u3XuxHCMBBFUcqhCAJKoQwXQRHExMTEVEA7C86Exuj/sbT" +
+  "3zWyEx/AOGls6HAghhJBuOZ4WsUd1eTUIrvIqEAAAAADdAPK+O8uvn08P4BsAZo/q8gD8geB0pPFf5y0AAAAAADALQEixkgMAAADwEARgSIDzRXwDAAAANMoit9YTBND" +
+  "it/TC2C9AI4wxACpijAdQGGNsgAIYwwOIyDNrAgCi73n9/ixj5gSwSv6Mdd34AL6SntWwX4C1iHny2yponw4TvqMvQOhSNcu67heLUB3AVTBmqdaabICHvHzTvWQ1gID" +
+  "yu0dQC1BkHxABUOy1mLnpiSrtBIgpbyC0LmpfV3Yr3GMFZL5Nks8m2c+AddnFAFR6bSYf1EqsgM0CjfcHyafWnH2Ac2PU+KGYfIR3JrC8jqgsTQghk+cDxYd49AvXy3E" +
+  "AAAAASUVORK5CYII=";
 
 surferImg.onload = () => {
   surferImgReady = true;
 };
 surferImg.onerror = () => {
-  // If the external file fails to load, use the embedded sprite instead.
-  if (surferImg.src !== embeddedSurferDataUri) {
-    surferImgReady = false;
-    surferImg.src = embeddedSurferDataUri;
-    return;
-  }
-
+  // If a custom sprite fails to load, stick with the embedded default.
   surferImgReady = false;
+  surferImg.src = embeddedSurferDataUri;
 };
 
-// Try to load a user-provided sprite first.
-surferImg.src = "assets/surfer.png";
+// Start with the built-in sprite so the character always renders.
+surferImg.src = embeddedSurferDataUri;
+
+// If a custom sprite exists at assets/surfer.png, swap it in without breaking the
+// game when the file is missing (e.g., in environments that disallow binaries).
+fetch("assets/surfer.png")
+  .then((res) => {
+    if (!res.ok) return;
+    surferImgReady = false;
+    surferImg.src = "assets/surfer.png";
+  })
+  .catch(() => {
+    // Ignore missing or blocked assets; the embedded sprite keeps the game playable.
+  });
 
 // Wave math helpers
 function getWaveY(worldX) {
