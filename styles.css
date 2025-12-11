@@ -1,0 +1,246 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #001528;
+  color: #f5f9ff;
+}
+
+#gameCanvas {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* HUD */
+
+.hud {
+  position: fixed;
+  top: 12px;
+  left: 0;
+  right: 0;
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 10;
+  font-size: 14px;
+}
+
+.hud-left,
+.hud-right {
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hud-label {
+  opacity: 0.75;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+.hud-value {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Center Overlay (menu) */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  z-index: 20;
+  background: radial-gradient(circle at top, rgba(0, 200, 255, 0.3), transparent 60%),
+              radial-gradient(circle at bottom, rgba(0, 70, 140, 0.9), rgba(0, 10, 40, 0.98));
+}
+
+.overlay-title {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  text-shadow: 0 6px 22px rgba(0, 0, 0, 0.7);
+}
+
+.overlay-subtitle {
+  max-width: 420px;
+  font-size: 14px;
+  line-height: 1.6;
+  opacity: 0.9;
+  margin-bottom: 24px;
+}
+
+.overlay-button {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 26px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  background: linear-gradient(135deg, #00d5ff, #0076ff);
+  color: #001020;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.08s ease;
+}
+
+.overlay-button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.75);
+}
+
+.overlay-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.65);
+}
+
+/* Game over panel */
+
+.gameover {
+  position: fixed;
+  left: 50%;
+  top: 18%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  padding: 16px 18px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  z-index: 25;
+  width: 260px;
+}
+
+.gameover-title {
+  font-size: 20px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.gameover-score {
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.gameover-input {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gameover-input label {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.gameover-input input {
+  padding: 6px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 5, 25, 0.9);
+  color: #f5f9ff;
+  font-size: 13px;
+  outline: none;
+}
+
+.gameover-input input:focus {
+  border-color: #00d5ff;
+}
+
+.gameover-input button {
+  margin-top: 4px;
+  border-radius: 999px;
+  border: none;
+  padding: 6px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.gameover-input button#saveScoreButton {
+  background: linear-gradient(135deg, #00d5ff, #0076ff);
+  color: #001020;
+  font-weight: 600;
+}
+
+.gameover-input button.secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: #e3f3ff;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Leaderboard */
+
+.leaderboard {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  width: 190px;
+  max-height: 210px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 12px;
+  z-index: 15;
+}
+
+.leaderboard-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+
+.leaderboard-list {
+  list-style: decimal;
+  margin: 0;
+  padding-left: 18px;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.leaderboard-list li {
+  margin-bottom: 3px;
+}
+
+/* Small screens */
+
+@media (max-width: 600px) {
+  .overlay-title {
+    font-size: 30px;
+  }
+
+  .leaderboard {
+    width: 170px;
+    font-size: 11px;
+  }
+
+  .gameover {
+    width: 230px;
+  }
+}
