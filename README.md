@@ -20,12 +20,17 @@ The game stores your **best score** locally in `localStorage`.
 ├─ index.html     # main page
 ├─ style.css      # layout + styling
 ├─ game.js        # all game logic & rendering
-└─ assets/
-   └─ surfer.png  # (optional) drop your own surfer sprite here
+└─ assets/        # place an optional surfer sprite here as surfer.png
 ```
 
-If `assets/surfer.png` exists, the game will render that sprite on the board.  
-If not, it'll use the built–in simple “stick surfer” character.
+If `assets/surfer.png` exists, the game will render that sprite on the board.
+If not, it'll use the built–in default sprite embedded in the code.
+
+## Play it live
+
+The game is hosted on GitHub Pages at:
+
+https://jaycee21303.github.io/SurfRunner/
 
 ## Hosting on GitHub Pages
 
