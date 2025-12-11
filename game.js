@@ -4,6 +4,28 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+// Canvas helpers -----------------------------------------------------------
+// Some browsers (or older Chromium versions used by certain hosting setups)
+// don't ship `roundRect` on the 2D context. When that happens the draw calls
+// would throw and halt the game loop before anything is rendered. Provide a
+// tiny polyfill so rendering always succeeds.
+if (ctx && typeof ctx.roundRect !== "function") {
+  ctx.roundRect = function roundRect(x, y, w, h, r) {
+    const radius = Math.max(0, Math.min(r || 0, Math.min(Math.abs(w), Math.abs(h)) / 2));
+    this.beginPath();
+    this.moveTo(x + radius, y);
+    this.lineTo(x + w - radius, y);
+    this.quadraticCurveTo(x + w, y, x + w, y + radius);
+    this.lineTo(x + w, y + h - radius);
+    this.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+    this.lineTo(x + radius, y + h);
+    this.quadraticCurveTo(x, y + h, x, y + h - radius);
+    this.lineTo(x, y + radius);
+    this.quadraticCurveTo(x, y, x + radius, y);
+    this.closePath();
+  };
+}
+
 const scoreEl = document.getElementById("score");
 const bestEl = document.getElementById("highScore");
 const mobileHintEl = document.getElementById("mobileHint");
