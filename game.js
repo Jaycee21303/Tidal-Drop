@@ -128,40 +128,6 @@ const motionTrail = {
   },
 };
 
-const surferImg = new Image();
-let surferImgReady = false;
-
-// Embedded surfer sprite so the game stays playable without binary assets.
-const embeddedSurferDataUri =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABQElEQVR42u3XuxHCMBBFUcqhCAJKoQwXQRHExMTEVEA7C86Exuj/sbT" +
-  "3zWyEx/AOGls6HAghhJBuOZ4WsUd1eTUIrvIqEAAAAADdAPK+O8uvn08P4BsAZo/q8gD8geB0pPFf5y0AAAAAADALQEixkgMAAADwEARgSIDzRXwDAAAANMoit9YTBND" +
-  "it/TC2C9AI4wxACpijAdQGGNsgAIYwwOIyDNrAgCi73n9/ixj5gSwSv6Mdd34AL6SntWwX4C1iHny2yponw4TvqMvQOhSNcu67heLUB3AVTBmqdaabICHvHzTvWQ1gID" +
-  "yu0dQC1BkHxABUOy1mLnpiSrtBIgpbyC0LmpfV3Yr3GMFZL5Nks8m2c+AddnFAFR6bSYf1EqsgM0CjfcHyafWnH2Ac2PU+KGYfIR3JrC8jqgsTQghk+cDxYd49AvXy3E" +
-  "AAAAASUVORK5CYII=";
-
-surferImg.onload = () => {
-  surferImgReady = true;
-};
-surferImg.onerror = () => {
-  // If a custom sprite fails to load, stick with the embedded default.
-  surferImgReady = false;
-  surferImg.src = embeddedSurferDataUri;
-};
-
-// Start with the built-in sprite so the character always renders.
-surferImg.src = embeddedSurferDataUri;
-
-// If a custom sprite exists at assets/surfer.png, swap it in without breaking the
-// game when the file is missing (e.g., in environments that disallow binaries).
-fetch("assets/surfer.png")
-  .then((res) => {
-    if (!res.ok) return;
-    surferImgReady = false;
-    surferImg.src = "assets/surfer.png";
-  })
-  .catch(() => {
-    // Ignore missing or blocked assets; the embedded sprite keeps the game playable.
-  });
 
 // Wave math helpers
 function getWaveY(worldX) {
@@ -597,83 +563,77 @@ function drawSurfer() {
   ctx.stroke();
 
   // surfer character
-  if (surferImgReady) {
-    const imgW = w * 1.2;
-    const imgH = h * 1.6;
-    ctx.drawImage(surferImg, -imgW / 2, -imgH + 4, imgW, imgH);
-  } else {
-    const skin = "#f4c7a1";
-    const shirt = "#0c6cff";
-    const shorts = "#ff5f6d";
+  const skin = "#f4c7a1";
+  const shirt = "#0c6cff";
+  const shorts = "#ff5f6d";
 
-    // legs
-    ctx.strokeStyle = skin;
-    ctx.lineWidth = 5;
-    ctx.lineCap = "round";
-    ctx.beginPath();
-    ctx.moveTo(-w * 0.08, -h * 0.04);
-    ctx.lineTo(-w * 0.2, h * 0.24);
-    ctx.moveTo(w * 0.08, -h * 0.04);
-    ctx.lineTo(w * 0.24, h * 0.28);
-    ctx.stroke();
+  // legs
+  ctx.strokeStyle = skin;
+  ctx.lineWidth = 5;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(-w * 0.08, -h * 0.04);
+  ctx.lineTo(-w * 0.2, h * 0.24);
+  ctx.moveTo(w * 0.08, -h * 0.04);
+  ctx.lineTo(w * 0.24, h * 0.28);
+  ctx.stroke();
 
-    // shorts
-    ctx.fillStyle = shorts;
-    ctx.beginPath();
-    ctx.roundRect(-w * 0.26, -h * 0.22, w * 0.52, h * 0.26, 6);
-    ctx.fill();
+  // shorts
+  ctx.fillStyle = shorts;
+  ctx.beginPath();
+  ctx.roundRect(-w * 0.26, -h * 0.22, w * 0.52, h * 0.26, 6);
+  ctx.fill();
 
-    // torso
-    ctx.fillStyle = shirt;
-    ctx.beginPath();
-    ctx.roundRect(-w * 0.22, -h * 0.56, w * 0.44, h * 0.36, 10);
-    ctx.fill();
+  // torso
+  ctx.fillStyle = shirt;
+  ctx.beginPath();
+  ctx.roundRect(-w * 0.22, -h * 0.56, w * 0.44, h * 0.36, 10);
+  ctx.fill();
 
-    // neck
-    ctx.fillStyle = skin;
-    ctx.fillRect(-w * 0.04, -h * 0.64, w * 0.08, h * 0.08);
+  // neck
+  ctx.fillStyle = skin;
+  ctx.fillRect(-w * 0.04, -h * 0.64, w * 0.08, h * 0.08);
 
-    // arms
-    ctx.strokeStyle = skin;
-    ctx.lineWidth = 5;
-    ctx.beginPath();
-    ctx.moveTo(-w * 0.18, -h * 0.42);
-    ctx.lineTo(-w * 0.4, -h * 0.18);
-    ctx.moveTo(w * 0.18, -h * 0.42);
-    ctx.lineTo(w * 0.42, -h * 0.12);
-    ctx.stroke();
+  // arms
+  ctx.strokeStyle = skin;
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.moveTo(-w * 0.18, -h * 0.42);
+  ctx.lineTo(-w * 0.4, -h * 0.18);
+  ctx.moveTo(w * 0.18, -h * 0.42);
+  ctx.lineTo(w * 0.42, -h * 0.12);
+  ctx.stroke();
 
-    // head
-    ctx.fillStyle = skin;
-    ctx.beginPath();
-    ctx.arc(0, -h * 0.75, h * 0.24, 0, Math.PI * 2);
-    ctx.fill();
+  // head
+  ctx.fillStyle = skin;
+  ctx.beginPath();
+  ctx.arc(0, -h * 0.75, h * 0.24, 0, Math.PI * 2);
+  ctx.fill();
 
-    // hair
-    ctx.fillStyle = "#3c2f2f";
-    ctx.beginPath();
-    ctx.arc(0, -h * 0.8, h * 0.24, Math.PI * 0.9, Math.PI * 2.1);
-    ctx.fill();
+  // hair
+  ctx.fillStyle = "#3c2f2f";
+  ctx.beginPath();
+  ctx.arc(0, -h * 0.8, h * 0.24, Math.PI * 0.9, Math.PI * 2.1);
+  ctx.fill();
 
-    // sunglasses
-    ctx.fillStyle = "#0a1a32";
-    ctx.fillRect(-w * 0.12, -h * 0.78, w * 0.09, h * 0.06);
-    ctx.fillRect(w * 0.02, -h * 0.78, w * 0.09, h * 0.06);
-    ctx.strokeStyle = "#111";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(-w * 0.03, -h * 0.75);
-    ctx.lineTo(w * 0.03, -h * 0.75);
-    ctx.stroke();
+  // sunglasses
+  ctx.fillStyle = "#0a1a32";
+  ctx.fillRect(-w * 0.12, -h * 0.78, w * 0.09, h * 0.06);
+  ctx.fillRect(w * 0.02, -h * 0.78, w * 0.09, h * 0.06);
+  ctx.strokeStyle = "#111";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(-w * 0.03, -h * 0.75);
+  ctx.lineTo(w * 0.03, -h * 0.75);
+  ctx.stroke();
 
-    // nose shadow
-    ctx.strokeStyle = "rgba(0,0,0,0.25)";
-    ctx.lineWidth = 1.4;
-    ctx.beginPath();
-    ctx.moveTo(0, -h * 0.74);
-    ctx.lineTo(-w * 0.02, -h * 0.69);
-    ctx.stroke();
-  }
+  // nose shadow
+  ctx.strokeStyle = "rgba(0,0,0,0.25)";
+  ctx.lineWidth = 1.4;
+  ctx.beginPath();
+  ctx.moveTo(0, -h * 0.74);
+  ctx.lineTo(-w * 0.02, -h * 0.69);
+  ctx.stroke();
 
   ctx.restore();
 }
