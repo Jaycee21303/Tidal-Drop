@@ -947,8 +947,6 @@
         b.x = camera.x + width + randRange(60, 280);
         b.y = randRange(height * 0.08, height * 0.42);
       }
-      requestJump();
-      e.preventDefault();
     }
   }
 

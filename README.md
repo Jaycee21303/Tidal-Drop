@@ -2,7 +2,12 @@
 
 A side-scrolling hill gliding game inspired by classic penguin racing titles. Hold to dive and build speed on downhill slopes, then release to launch into the air and chain long-distance glides.
 
-## Play
+## Play online
+Enable GitHub Pages for this repository (branch: `work`, folder: `/`). Once enabled, the game will be available at:
+
+https://<your-github-username>.github.io/SurfRunner/
+
+## Controls
 - Press **Space** / hold mouse / touch: dive into the terrain to accelerate.
 - Release: launch off the next hill and glide.
 - Land smoothly on downhill sections to keep momentum and reach new distances.
