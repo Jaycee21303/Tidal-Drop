@@ -1,57 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Tidal Drop - Infinite Surf</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <canvas id="gameCanvas"></canvas>
-
-  <!-- HUD -->
-  <div class="hud">
-    <div class="hud-left">
-      <div class="hud-label">Score</div>
-      <div id="scoreValue" class="hud-value">0</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GlideFlight - Penguin Racer</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="hud">
+      <div class="hud-left">
+        <div class="hud-label">Speed</div>
+        <div id="speedDisplay" class="hud-value">0</div>
+      </div>
+      <div class="hud-center">
+        <div class="hud-label">Distance</div>
+        <div id="distanceDisplay" class="hud-value">0</div>
+      </div>
+      <div class="hud-right">
+        <div class="hud-label">Best</div>
+        <div id="bestDisplay" class="hud-value">0</div>
+      </div>
     </div>
-    <div class="hud-right">
-      <div class="hud-label">Best</div>
-      <div id="bestValue" class="hud-value">0</div>
-    </div>
-  </div>
 
-  <!-- Center overlays -->
-  <div id="overlay" class="overlay">
-    <div id="overlayTitle" class="overlay-title">Tidal Drop</div>
-    <div id="overlaySubtitle" class="overlay-subtitle">
-      Use <strong>← →</strong> or <strong>A / D</strong> to steer.<br />
-      Click / Tap left or right side to move.<br />
-      Avoid obstacles and ride the infinite blue wave.
-    </div>
-    <button id="startButton" class="overlay-button">Start Run</button>
-  </div>
+    <canvas id="gameCanvas" width="1280" height="720"></canvas>
 
-  <!-- Game over + name entry -->
-  <div id="gameOverPanel" class="gameover hidden">
-    <div class="gameover-title">Wipeout!</div>
-    <div class="gameover-score">
-      <span>Run Score:</span> <span id="finalScore">0</span>
+    <div id="overlay" class="overlay">
+      <div class="overlay-panel">
+        <h1 class="overlay-title">Racing Penguin: Slide &amp; Fly</h1>
+        <p class="overlay-subtitle">
+          Hold <strong>Space</strong> (or touch) to dive and gain speed on the hills.<br />
+          Release to launch off the rounded slopes and soar through the air.
+        </p>
+        <button id="startButton" class="overlay-button">Start Run</button>
+      </div>
     </div>
-    <div class="gameover-input">
-      <label for="playerName">Save to leaderboard:</label>
-      <input id="playerName" type="text" maxlength="12" placeholder="Your name" />
-      <button id="saveScoreButton">Save</button>
-      <button id="skipSaveButton" class="secondary">Skip</button>
+
+    <div id="gameOverPanel" class="overlay hidden">
+      <div class="overlay-panel">
+        <h2 class="overlay-title">Run Over</h2>
+        <p class="overlay-subtitle">Distance traveled: <span id="finalDistance">0</span> m</p>
+        <div class="leaderboard">
+          <div class="leaderboard-title">Local Leaderboard</div>
+          <ul id="leaderboardList"></ul>
+        </div>
+        <div class="input-row">
+          <input id="playerName" type="text" placeholder="Your name" />
+          <button id="saveScoreButton" class="overlay-button">Save</button>
+          <button id="skipSaveButton" class="overlay-button secondary">Skip</button>
+        </div>
+        <button id="restartButton" class="overlay-button">Play Again</button>
+      </div>
     </div>
-  </div>
 
-  <!-- Leaderboard -->
-  <div id="leaderboard" class="leaderboard">
-    <div class="leaderboard-title">Local Leaderboard</div>
-    <ol id="leaderboardList" class="leaderboard-list"></ol>
-  </div>
-
-  <script src="js/game.js" defer></script>
-</body>
+    <script src="js/game.js"></script>
+  </body>
 </html>
