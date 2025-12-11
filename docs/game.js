@@ -56,30 +56,6 @@ let bestScore = parseInt(localStorage.getItem("surfRacerBestScore") || "0", 10) 
 
 let lastTime = 0;
 
-const surferImg = new Image();
-let surferImgReady = false;
-
-// Optional: drop a surfer sprite as assets/surfer.png.
-// If the file isn't present, we fall back to an embedded default sprite.
-const embeddedSurferDataUri =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABQElEQVR42u3XuxHCMBBFUcqhCAJKoQwXQRHExMTEVEA7C86Exuj/sbT3zWyEx/AOGls6HAghhJBuOZ4WsUd1eTUIrvIqEAAAAADdAPK+O8uvn08P4BsAZo/q8gD8geB0pPFf5y0AAAAAADALQEixkgMAAADwEARgSIDzRXwDAAAANMoit9YTBNDit/TC2C9AI4wxACpijAdQGGNsgAIYwwOIyDNrAgCi73n9/ixj5gSwSv6Mdd34AL6SntWwX4C1iHny2yponw4TvqMvQOhSNcu67heLUB3AVTBmqdaabICHvHzTvWQ1gIDyu0dQC1BkHxABUOy1mLnpiSrtBIgpbyC0LmpfV3Yr3GMFZL5Nks8m2c+AddnFAFR6bSYf1EqsgM0CjfcHyafWnH2Ac2PU+KGYfIR3JrC8jqgsTQghk+cDxYd49AvXy3EAAAAASUVORK5CYII=";
-
-surferImg.onload = () => {
-  surferImgReady = true;
-};
-surferImg.onerror = () => {
-  // If the external file fails to load, use the embedded sprite instead.
-  if (surferImg.src !== embeddedSurferDataUri) {
-    surferImgReady = false;
-    surferImg.src = embeddedSurferDataUri;
-    return;
-  }
-
-  surferImgReady = false;
-};
-
-// Try to load a user-provided sprite first.
-surferImg.src = "assets/surfer.png";
 
 // Wave math helpers
 function getWaveY(worldX) {
@@ -406,45 +382,77 @@ function drawSurfer() {
   ctx.stroke();
 
   // surfer character
-  if (surferImgReady) {
-    const imgW = w * 1.2;
-    const imgH = h * 1.6;
-    ctx.drawImage(surferImg, -imgW / 2, -imgH + 4, imgW, imgH);
-  } else {
-    // simple stylized human
-    ctx.fillStyle = "#ffe0c2";
-    ctx.beginPath();
-    ctx.arc(0, -h * 0.8, h * 0.25, 0, Math.PI * 2);
-    ctx.fill();
+  const skin = "#f4c7a1";
+  const shirt = "#0c6cff";
+  const shorts = "#ff5f6d";
 
-    // body
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(0, -h * 0.6);
-    ctx.lineTo(0, -h * 0.1);
-    ctx.stroke();
+  // legs
+  ctx.strokeStyle = skin;
+  ctx.lineWidth = 5;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(-w * 0.08, -h * 0.04);
+  ctx.lineTo(-w * 0.2, h * 0.22);
+  ctx.moveTo(w * 0.08, -h * 0.04);
+  ctx.lineTo(w * 0.24, h * 0.25);
+  ctx.stroke();
 
-    // arms
-    ctx.beginPath();
-    ctx.moveTo(0, -h * 0.5);
-    ctx.lineTo(-w * 0.4, -h * 0.2);
-    ctx.moveTo(0, -h * 0.5);
-    ctx.lineTo(w * 0.4, -h * 0.25);
-    ctx.stroke();
+  // shorts
+  ctx.fillStyle = shorts;
+  ctx.beginPath();
+  ctx.roundRect(-w * 0.26, -h * 0.2, w * 0.52, h * 0.24, 6);
+  ctx.fill();
 
-    // legs
-    ctx.beginPath();
-    ctx.moveTo(0, -h * 0.1);
-    ctx.lineTo(-w * 0.25, h * 0.2);
-    ctx.moveTo(0, -h * 0.1);
-    ctx.lineTo(w * 0.25, h * 0.23);
-    ctx.stroke();
+  // torso
+  ctx.fillStyle = shirt;
+  ctx.beginPath();
+  ctx.roundRect(-w * 0.2, -h * 0.5, w * 0.4, h * 0.32, 10);
+  ctx.fill();
 
-    // shorts
-    ctx.fillStyle = "#3ad5ff";
-    ctx.fillRect(-w * 0.23, -h * 0.15, w * 0.46, h * 0.25);
-  }
+  // neck
+  ctx.fillStyle = skin;
+  ctx.fillRect(-w * 0.04, -h * 0.6, w * 0.08, h * 0.08);
+
+  // arms
+  ctx.strokeStyle = skin;
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.moveTo(-w * 0.16, -h * 0.38);
+  ctx.lineTo(-w * 0.36, -h * 0.16);
+  ctx.moveTo(w * 0.16, -h * 0.38);
+  ctx.lineTo(w * 0.38, -h * 0.14);
+  ctx.stroke();
+
+  // head
+  ctx.fillStyle = skin;
+  ctx.beginPath();
+  ctx.arc(0, -h * 0.68, h * 0.22, 0, Math.PI * 2);
+  ctx.fill();
+
+  // hair
+  ctx.fillStyle = "#3c2f2f";
+  ctx.beginPath();
+  ctx.arc(0, -h * 0.72, h * 0.22, Math.PI * 0.9, Math.PI * 2.1);
+  ctx.fill();
+
+  // sunglasses
+  ctx.fillStyle = "#0a1a32";
+  ctx.fillRect(-w * 0.1, -h * 0.72, w * 0.08, h * 0.06);
+  ctx.fillRect(w * 0.02, -h * 0.72, w * 0.08, h * 0.06);
+  ctx.strokeStyle = "#111";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(-w * 0.02, -h * 0.7);
+  ctx.lineTo(w * 0.02, -h * 0.7);
+  ctx.stroke();
+
+  // nose shadow
+  ctx.strokeStyle = "rgba(0,0,0,0.25)";
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(0, -h * 0.69);
+  ctx.lineTo(-w * 0.016, -h * 0.65);
+  ctx.stroke();
 
   ctx.restore();
 }
